@@ -1,0 +1,8 @@
+(axiom S) = (rule) DOT (S_) .
+(S_) = (rule) DOT (S_) | .
+(rule) = (lhs) ASSIGN (rhs) .
+(lhs) = NON_TERMINAL | AXIOM .
+(rhs) = (symbols) (rhs_) .
+(rhs_) =|  OR (rhs) .
+(symbols) = (symbol) (symbols) | .
+(symbol) = TERMINAL | NON_TERMINAL .

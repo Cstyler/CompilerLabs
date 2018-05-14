@@ -1,0 +1,5 @@
+(axiom E ) = ( T ) ( E1 ).
+(T) = ( F ) ( T1 ).
+(F) = n | LPAREN ( E ) RPAREN.
+( T1 ) = MUL ( F ) ( T1 ) | .
+( E1 ) = PLUS ( T ) ( E1 ) | .
