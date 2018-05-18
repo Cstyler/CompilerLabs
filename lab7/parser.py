@@ -12,6 +12,34 @@ from tree import TerminalNode, NonTerminalNode
 EPSILON = None
 
 
+# noinspection PyArgumentList
+@attr.s
+class SerGrammar:
+    parse_table: dict = attr.ib()
+    term_list: list = attr.ib()
+    axiom: str = attr.ib()
+    non_term_list: list = attr.ib()
+
+    def build_parser(self, scanner_type: Callable, text: str):
+        def get_rhs_tuple(rhs: list):
+            res = []
+            for x in rhs:
+                try:
+                    new_x = TermEnum[x]
+                except KeyError:
+                    new_x = NonTermEnum[x]
+                res.append(new_x)
+            return tuple(res)
+        TermEnum = Enum('TermEnum', self.term_list)
+        NonTermEnum = Enum('NonTermEnum', self.non_term_list)
+        axiom = NonTermEnum[self.axiom]
+        parse_table = dict()
+        for lhs, rhs in self.parse_table.items():
+            term, non_term = lhs
+            parse_table[(TermEnum[term], NonTermEnum[non_term])] = get_rhs_tuple(rhs)
+        return Parser(scanner_type, text, TermEnum, NonTermEnum, parse_table, axiom)
+
+
 @attr.s
 class Grammar:
     grammar_dict: Dict[Enum, Tuple[Tuple[Enum]]] = attr.ib()
@@ -19,6 +47,18 @@ class Grammar:
     NonTermEnum: Enum = attr.ib()
     axiom: Enum = attr.ib()
     first_set_chain_dict: Dict = dict()
+
+    def serialize(self):
+        term_list = [x.name for x in iter(self.TermEnum)]
+        non_term_list = [x.name for x in iter(self.NonTermEnum)]
+        parse_table = dict()
+        for lhs, rhs in self.parse_table.items():
+            term, non_term = lhs
+            parse_table[(term.name, non_term.name)] = tuple(x.name for x in rhs)
+        return SerGrammar(parse_table, term_list, self.axiom.name, non_term_list)
+
+    def build_parser(self, scanner_type, text):
+        return Parser(scanner_type, text, self.TermEnum, self.NonTermEnum, self.parse_table, self.axiom)
 
     def build_parse_table(self):
         self.build_first_set_non_term()
@@ -46,9 +86,6 @@ class Grammar:
                         _tuple = (symbol, lhs)
                         check_ll1()
                         self.parse_table[_tuple] = rhs
-
-    def build_parser(self, scanner_type: Callable, text: str):
-        return Parser(scanner_type, text, self.TermEnum, self.NonTermEnum, self.parse_table, self.axiom)
 
     def first_set_chain(self, symbols: Tuple[Enum], cache=True):
         if cache and symbols in self.first_set_chain_dict:
@@ -292,8 +329,8 @@ class GrammarParser(Parser):
         terminal_strs, non_terminal_strs, axiom_strs = set(), set(), set()
         grammar_dict = dict()
         handle_s(self.root)
-        TermEnum = Enum('Term', list(terminal_strs | {'END_OF_PROGRAM'}))
-        NonTermEnum = Enum('NonTerm', list(non_terminal_strs))
+        TermEnum = Enum('TermEnum', list(terminal_strs | {'END_OF_PROGRAM'}))
+        NonTermEnum = Enum('NonTermEnum', list(non_terminal_strs))
 
         grammar_dict = transform_dict()
 
