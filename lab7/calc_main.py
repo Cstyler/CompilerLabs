@@ -1,3 +1,5 @@
+from turtledemo import penrose
+
 import click
 from parser import GrammarParser, calc_expr_tree
 from exceptions import ParseException
