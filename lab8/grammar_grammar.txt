@@ -1,0 +1,6 @@
+(S) = [NT ASS (rhs) DOT]*.
+(rhs) = (alt) [OR (alt)]*.
+(term)=NT|T|LP(rhs)RP.
+(alt)=[(term)(M)]*.
+(M)=[PLUS|MUL|QM]?.
+

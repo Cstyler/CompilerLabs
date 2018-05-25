@@ -5,6 +5,7 @@ from typing import Union
 @functools.total_ordering
 class Position:
     not_allowed_symbols = {"(", ")", "[", "]", "=", "*", "+", "?", "|", "."}
+
     def __init__(self, text: str, line: int, pos: int, index: int):
         self._text = text
         self._line = line

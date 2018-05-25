@@ -1,4 +1,6 @@
 from enum import Enum, auto
+from typing import List
+
 from position import Position
 from abc import ABC
 
@@ -26,7 +28,6 @@ class T(Enum):
     END_OF_PROGRAM = auto()
 
 
-
 class Token(ABC):
     def __init__(self, tag: Enum, starting: Position, following: Position):
         self._tag = tag
@@ -34,6 +35,15 @@ class Token(ABC):
 
     def __str__(self):
         return f'{self._tag} {str(self._coords)}:'
+
+    # def __repr__(self):
+    #     return f'{self._tag}'
+
+    def has_tag(self, tag: Enum):
+        return self.tag == tag
+
+    def has_one_of_tags(self, *tags: Enum):
+        return any(self.tag == tag for tag in tags)
 
     @property
     def tag(self):
