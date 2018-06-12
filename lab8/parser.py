@@ -61,12 +61,12 @@ class Parser:
         return res_set
 
     def first_set_for_alt(self, alt):
-        # print(alt, type(alt))
+        print(alt, type(alt))
         if not alt.list_of_term:
             return {EPSILON}
         head_term, *tail_term = alt.list_of_term
         sym = head_term.symbol
-        # print(sym, type(sym))
+        print(sym, type(sym))
         if isinstance(sym, TerminalToken):
             first_set_term = {self.get_token_name(sym)}
             if not (head_term.quantifier is None or head_term.quantifier == T.PLUS):
@@ -77,7 +77,7 @@ class Parser:
             if not (head_term.quantifier is None or head_term.quantifier == T.PLUS):
                 first_set_term = first_set_term - {EPSILON}
                 first_set_term |= self.first_set_for_alt(Alt(tail_term))
-        else:
+        elif isinstance(sym, NonTerminalToken):
             first_set_term = self.first_set[self.get_token_name(sym)].copy()
             if not (head_term.quantifier is None or head_term.quantifier == T.PLUS):
                 first_set_term.add(EPSILON)

@@ -1,0 +1,756 @@
+Терминалы не используются в грамматике
+
+   COMMENTS
+
+
+Грамматика
+
+    0 $accept: main_root $end
+
+    1 main_root: nl root
+
+    2 $@1: %empty
+
+    3 root: OPEN_TAG $@1 nl attrs root__
+
+    4 $@2: %empty
+
+    5 $@3: %empty
+
+    6 root: XML_LPAREN $@2 nl attrs XML_RPAREN $@3 nl root
+
+    7 $@4: %empty
+
+    8 root__: RPAREN $@4 nl content root_
+
+    9 $@5: %empty
+
+   10 root__: RSPAREN $@5 nl
+
+   11 $@6: %empty
+
+   12 $@7: %empty
+
+   13 root_: CLOSE_TAG $@6 nl attrs RPAREN $@7 nl
+
+   14 $@8: %empty
+
+   15 content: NUMBER $@8 nl
+
+   16 $@9: %empty
+
+   17 content: ATTR_KEY $@9 nl
+   18        | roots
+
+   19 $@10: %empty
+
+   20 roots: $@10 root roots
+   21      | %empty
+
+   22 $@11: %empty
+
+   23 attrs: $@11 attr attrs_
+   24      | %empty
+
+   25 $@12: %empty
+
+   26 attrs_: $@12 attr attrs_
+   27       | %empty
+
+   28 $@13: %empty
+
+   29 $@14: %empty
+
+   30 attr: ATTR_KEY $@13 nl ASSIGN $@14 nl attr_
+
+   31 $@15: %empty
+
+   32 attr_: ATTR_VALUE $@15 nl
+
+   33 $@16: %empty
+
+   34 nl: NEWLINE $@16 nl_
+   35   | %empty
+
+   36 $@17: %empty
+
+   37 nl_: NEWLINE $@17 nl_
+   38    | %empty
+
+
+Терминальные символы с правилами, в которых они появляются
+
+$end (0) 0
+error (256)
+ASSIGN (258) 30
+RSPAREN (259) 10
+RPAREN (260) 8 13
+XML_LPAREN (261) 6
+XML_RPAREN (262) 6
+NEWLINE (263) 34 37
+CLOSE_TAG (264) 13
+OPEN_TAG (265) 3
+ATTR_VALUE (266) 32
+ATTR_KEY (267) 17 30
+COMMENTS (268)
+NUMBER (269) 15
+
+
+Нетерминальные символы с правилами, в которых они появляются
+
+$accept (15)
+    налево: 0
+main_root (16)
+    налево: 1, направо: 0
+root (17)
+    налево: 3 6, направо: 1 6 20
+$@1 (18)
+    налево: 2, направо: 3
+$@2 (19)
+    налево: 4, направо: 6
+$@3 (20)
+    налево: 5, направо: 6
+root__ (21)
+    налево: 8 10, направо: 3
+$@4 (22)
+    налево: 7, направо: 8
+$@5 (23)
+    налево: 9, направо: 10
+root_ (24)
+    налево: 13, направо: 8
+$@6 (25)
+    налево: 11, направо: 13
+$@7 (26)
+    налево: 12, направо: 13
+content (27)
+    налево: 15 17 18, направо: 8
+$@8 (28)
+    налево: 14, направо: 15
+$@9 (29)
+    налево: 16, направо: 17
+roots (30)
+    налево: 20 21, направо: 18 20
+$@10 (31)
+    налево: 19, направо: 20
+attrs (32)
+    налево: 23 24, направо: 3 6 13
+$@11 (33)
+    налево: 22, направо: 23
+attrs_ (34)
+    налево: 26 27, направо: 23 26
+$@12 (35)
+    налево: 25, направо: 26
+attr (36)
+    налево: 30, направо: 23 26
+$@13 (37)
+    налево: 28, направо: 30
+$@14 (38)
+    налево: 29, направо: 30
+attr_ (39)
+    налево: 32, направо: 30
+$@15 (40)
+    налево: 31, направо: 32
+nl (41)
+    налево: 34 35, направо: 1 3 6 8 10 13 15 17 30 32
+$@16 (42)
+    налево: 33, направо: 34
+nl_ (43)
+    налево: 37 38, направо: 34 37
+$@17 (44)
+    налево: 36, направо: 37
+
+
+State 0
+
+    0 $accept: . main_root $end
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    main_root  переход в состояние 2
+    nl         переход в состояние 3
+
+
+State 1
+
+   34 nl: NEWLINE . $@16 nl_
+
+    $default  вывод с использованием правила 33 ($@16)
+
+    $@16  переход в состояние 4
+
+
+State 2
+
+    0 $accept: main_root . $end
+
+    $end  сдвиг, и переход в состояние 5
+
+
+State 3
+
+    1 main_root: nl . root
+
+    XML_LPAREN  сдвиг, и переход в состояние 6
+    OPEN_TAG    сдвиг, и переход в состояние 7
+
+    root  переход в состояние 8
+
+
+State 4
+
+   34 nl: NEWLINE $@16 . nl_
+
+    NEWLINE  сдвиг, и переход в состояние 9
+
+    $default  вывод с использованием правила 38 (nl_)
+
+    nl_  переход в состояние 10
+
+
+State 5
+
+    0 $accept: main_root $end .
+
+    $default  принять
+
+
+State 6
+
+    6 root: XML_LPAREN . $@2 nl attrs XML_RPAREN $@3 nl root
+
+    $default  вывод с использованием правила 4 ($@2)
+
+    $@2  переход в состояние 11
+
+
+State 7
+
+    3 root: OPEN_TAG . $@1 nl attrs root__
+
+    $default  вывод с использованием правила 2 ($@1)
+
+    $@1  переход в состояние 12
+
+
+State 8
+
+    1 main_root: nl root .
+
+    $default  вывод с использованием правила 1 (main_root)
+
+
+State 9
+
+   37 nl_: NEWLINE . $@17 nl_
+
+    $default  вывод с использованием правила 36 ($@17)
+
+    $@17  переход в состояние 13
+
+
+State 10
+
+   34 nl: NEWLINE $@16 nl_ .
+
+    $default  вывод с использованием правила 34 (nl)
+
+
+State 11
+
+    6 root: XML_LPAREN $@2 . nl attrs XML_RPAREN $@3 nl root
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 14
+
+
+State 12
+
+    3 root: OPEN_TAG $@1 . nl attrs root__
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 15
+
+
+State 13
+
+   37 nl_: NEWLINE $@17 . nl_
+
+    NEWLINE  сдвиг, и переход в состояние 9
+
+    $default  вывод с использованием правила 38 (nl_)
+
+    nl_  переход в состояние 16
+
+
+State 14
+
+    6 root: XML_LPAREN $@2 nl . attrs XML_RPAREN $@3 nl root
+
+    XML_RPAREN  вывод с использованием правила 24 (attrs)
+    $default    вывод с использованием правила 22 ($@11)
+
+    attrs  переход в состояние 17
+    $@11   переход в состояние 18
+
+
+State 15
+
+    3 root: OPEN_TAG $@1 nl . attrs root__
+
+    ATTR_KEY  вывод с использованием правила 22 ($@11)
+    $default  вывод с использованием правила 24 (attrs)
+
+    attrs  переход в состояние 19
+    $@11   переход в состояние 18
+
+
+State 16
+
+   37 nl_: NEWLINE $@17 nl_ .
+
+    $default  вывод с использованием правила 37 (nl_)
+
+
+State 17
+
+    6 root: XML_LPAREN $@2 nl attrs . XML_RPAREN $@3 nl root
+
+    XML_RPAREN  сдвиг, и переход в состояние 20
+
+
+State 18
+
+   23 attrs: $@11 . attr attrs_
+
+    ATTR_KEY  сдвиг, и переход в состояние 21
+
+    attr  переход в состояние 22
+
+
+State 19
+
+    3 root: OPEN_TAG $@1 nl attrs . root__
+
+    RSPAREN  сдвиг, и переход в состояние 23
+    RPAREN   сдвиг, и переход в состояние 24
+
+    root__  переход в состояние 25
+
+
+State 20
+
+    6 root: XML_LPAREN $@2 nl attrs XML_RPAREN . $@3 nl root
+
+    $default  вывод с использованием правила 5 ($@3)
+
+    $@3  переход в состояние 26
+
+
+State 21
+
+   30 attr: ATTR_KEY . $@13 nl ASSIGN $@14 nl attr_
+
+    $default  вывод с использованием правила 28 ($@13)
+
+    $@13  переход в состояние 27
+
+
+State 22
+
+   23 attrs: $@11 attr . attrs_
+
+    ATTR_KEY  вывод с использованием правила 25 ($@12)
+    $default  вывод с использованием правила 27 (attrs_)
+
+    attrs_  переход в состояние 28
+    $@12    переход в состояние 29
+
+
+State 23
+
+   10 root__: RSPAREN . $@5 nl
+
+    $default  вывод с использованием правила 9 ($@5)
+
+    $@5  переход в состояние 30
+
+
+State 24
+
+    8 root__: RPAREN . $@4 nl content root_
+
+    $default  вывод с использованием правила 7 ($@4)
+
+    $@4  переход в состояние 31
+
+
+State 25
+
+    3 root: OPEN_TAG $@1 nl attrs root__ .
+
+    $default  вывод с использованием правила 3 (root)
+
+
+State 26
+
+    6 root: XML_LPAREN $@2 nl attrs XML_RPAREN $@3 . nl root
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 32
+
+
+State 27
+
+   30 attr: ATTR_KEY $@13 . nl ASSIGN $@14 nl attr_
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 33
+
+
+State 28
+
+   23 attrs: $@11 attr attrs_ .
+
+    $default  вывод с использованием правила 23 (attrs)
+
+
+State 29
+
+   26 attrs_: $@12 . attr attrs_
+
+    ATTR_KEY  сдвиг, и переход в состояние 21
+
+    attr  переход в состояние 34
+
+
+State 30
+
+   10 root__: RSPAREN $@5 . nl
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 35
+
+
+State 31
+
+    8 root__: RPAREN $@4 . nl content root_
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 36
+
+
+State 32
+
+    6 root: XML_LPAREN $@2 nl attrs XML_RPAREN $@3 nl . root
+
+    XML_LPAREN  сдвиг, и переход в состояние 6
+    OPEN_TAG    сдвиг, и переход в состояние 7
+
+    root  переход в состояние 37
+
+
+State 33
+
+   30 attr: ATTR_KEY $@13 nl . ASSIGN $@14 nl attr_
+
+    ASSIGN  сдвиг, и переход в состояние 38
+
+
+State 34
+
+   26 attrs_: $@12 attr . attrs_
+
+    ATTR_KEY  вывод с использованием правила 25 ($@12)
+    $default  вывод с использованием правила 27 (attrs_)
+
+    attrs_  переход в состояние 39
+    $@12    переход в состояние 29
+
+
+State 35
+
+   10 root__: RSPAREN $@5 nl .
+
+    $default  вывод с использованием правила 10 (root__)
+
+
+State 36
+
+    8 root__: RPAREN $@4 nl . content root_
+
+    ATTR_KEY  сдвиг, и переход в состояние 40
+    NUMBER    сдвиг, и переход в состояние 41
+
+    CLOSE_TAG  вывод с использованием правила 21 (roots)
+    $default   вывод с использованием правила 19 ($@10)
+
+    content  переход в состояние 42
+    roots    переход в состояние 43
+    $@10     переход в состояние 44
+
+
+State 37
+
+    6 root: XML_LPAREN $@2 nl attrs XML_RPAREN $@3 nl root .
+
+    $default  вывод с использованием правила 6 (root)
+
+
+State 38
+
+   30 attr: ATTR_KEY $@13 nl ASSIGN . $@14 nl attr_
+
+    $default  вывод с использованием правила 29 ($@14)
+
+    $@14  переход в состояние 45
+
+
+State 39
+
+   26 attrs_: $@12 attr attrs_ .
+
+    $default  вывод с использованием правила 26 (attrs_)
+
+
+State 40
+
+   17 content: ATTR_KEY . $@9 nl
+
+    $default  вывод с использованием правила 16 ($@9)
+
+    $@9  переход в состояние 46
+
+
+State 41
+
+   15 content: NUMBER . $@8 nl
+
+    $default  вывод с использованием правила 14 ($@8)
+
+    $@8  переход в состояние 47
+
+
+State 42
+
+    8 root__: RPAREN $@4 nl content . root_
+
+    CLOSE_TAG  сдвиг, и переход в состояние 48
+
+    root_  переход в состояние 49
+
+
+State 43
+
+   18 content: roots .
+
+    $default  вывод с использованием правила 18 (content)
+
+
+State 44
+
+   20 roots: $@10 . root roots
+
+    XML_LPAREN  сдвиг, и переход в состояние 6
+    OPEN_TAG    сдвиг, и переход в состояние 7
+
+    root  переход в состояние 50
+
+
+State 45
+
+   30 attr: ATTR_KEY $@13 nl ASSIGN $@14 . nl attr_
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 51
+
+
+State 46
+
+   17 content: ATTR_KEY $@9 . nl
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 52
+
+
+State 47
+
+   15 content: NUMBER $@8 . nl
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 53
+
+
+State 48
+
+   13 root_: CLOSE_TAG . $@6 nl attrs RPAREN $@7 nl
+
+    $default  вывод с использованием правила 11 ($@6)
+
+    $@6  переход в состояние 54
+
+
+State 49
+
+    8 root__: RPAREN $@4 nl content root_ .
+
+    $default  вывод с использованием правила 8 (root__)
+
+
+State 50
+
+   20 roots: $@10 root . roots
+
+    CLOSE_TAG  вывод с использованием правила 21 (roots)
+    $default   вывод с использованием правила 19 ($@10)
+
+    roots  переход в состояние 55
+    $@10   переход в состояние 44
+
+
+State 51
+
+   30 attr: ATTR_KEY $@13 nl ASSIGN $@14 nl . attr_
+
+    ATTR_VALUE  сдвиг, и переход в состояние 56
+
+    attr_  переход в состояние 57
+
+
+State 52
+
+   17 content: ATTR_KEY $@9 nl .
+
+    $default  вывод с использованием правила 17 (content)
+
+
+State 53
+
+   15 content: NUMBER $@8 nl .
+
+    $default  вывод с использованием правила 15 (content)
+
+
+State 54
+
+   13 root_: CLOSE_TAG $@6 . nl attrs RPAREN $@7 nl
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 58
+
+
+State 55
+
+   20 roots: $@10 root roots .
+
+    $default  вывод с использованием правила 20 (roots)
+
+
+State 56
+
+   32 attr_: ATTR_VALUE . $@15 nl
+
+    $default  вывод с использованием правила 31 ($@15)
+
+    $@15  переход в состояние 59
+
+
+State 57
+
+   30 attr: ATTR_KEY $@13 nl ASSIGN $@14 nl attr_ .
+
+    $default  вывод с использованием правила 30 (attr)
+
+
+State 58
+
+   13 root_: CLOSE_TAG $@6 nl . attrs RPAREN $@7 nl
+
+    RPAREN    вывод с использованием правила 24 (attrs)
+    $default  вывод с использованием правила 22 ($@11)
+
+    attrs  переход в состояние 60
+    $@11   переход в состояние 18
+
+
+State 59
+
+   32 attr_: ATTR_VALUE $@15 . nl
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 61
+
+
+State 60
+
+   13 root_: CLOSE_TAG $@6 nl attrs . RPAREN $@7 nl
+
+    RPAREN  сдвиг, и переход в состояние 62
+
+
+State 61
+
+   32 attr_: ATTR_VALUE $@15 nl .
+
+    $default  вывод с использованием правила 32 (attr_)
+
+
+State 62
+
+   13 root_: CLOSE_TAG $@6 nl attrs RPAREN . $@7 nl
+
+    $default  вывод с использованием правила 12 ($@7)
+
+    $@7  переход в состояние 63
+
+
+State 63
+
+   13 root_: CLOSE_TAG $@6 nl attrs RPAREN $@7 . nl
+
+    NEWLINE  сдвиг, и переход в состояние 1
+
+    $default  вывод с использованием правила 35 (nl)
+
+    nl  переход в состояние 64
+
+
+State 64
+
+   13 root_: CLOSE_TAG $@6 nl attrs RPAREN $@7 nl .
+
+    $default  вывод с использованием правила 13 (root_)
